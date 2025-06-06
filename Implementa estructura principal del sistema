@@ -1,0 +1,30 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+// ==================== ESTRUCTURAS ====================
+
+// Esta estructura guarda la información de cada proceso
+struct Proceso {
+    string id;          // Guarda el ID único del proceso
+    string nombre;      // Guarda el nombre del proceso
+    int prioridad;      // Guarda la prioridad del proceso
+    Proceso* siguiente; // Apunta al siguiente proceso en la lista
+
+    // Constructor básico
+    Proceso(string _id, string _nombre, int _prioridad) {
+        id = _id;
+        nombre = _nombre;
+        prioridad = _prioridad;
+        siguiente = NULL;
+    }
+};
+
+// ==================== VARIABLES GLOBALES ====================
+Proceso* listaProcesos = NULL;  // Lista enlazada principal
+
+// ==================== MAIN BÁSICO ====================
+int main() {
+    cout << "Sistema de Gestión de Procesos - Inicializado\n";
+    return 0;
+}
