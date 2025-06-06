@@ -1,0 +1,90 @@
+// Función para buscar proceso por ID
+Proceso* buscarProcesoID(string id) {
+    Proceso* actual = listaProcesos;
+    while (actual) {
+        if (actual->id == id)
+            return actual;
+        actual = actual->siguiente;
+    }
+    return NULL;
+}
+
+// Función para eliminar proceso
+void eliminarProceso() {
+    string id;
+    cout << "Ingrese el ID del proceso a eliminar: ";
+    cin >> id;
+    Proceso* actual = listaProcesos;
+    Proceso* anterior = NULL;
+
+    // Buscar el proceso
+    while (actual && actual->id != id) {
+        anterior = actual;
+        actual = actual->siguiente;
+    }
+
+    if (!actual) {
+        cout << "Proceso no encontrado.\n";
+    } else {
+        if (!anterior)
+            listaProcesos = actual->siguiente;
+        else
+            anterior->siguiente = actual->siguiente;
+
+        delete actual;
+        cout << "Proceso eliminado correctamente.\n";
+    }
+    cout << "---------------------------------------------\n";
+}
+
+// Función para buscar por nombre
+void buscarProcesoPorNombre() {
+    string nombre;
+    cout << "Ingrese el nombre del proceso a buscar: ";
+    cin >> nombre;
+    Proceso* actual = listaProcesos;
+    bool encontrado = false;
+
+    while (actual) {
+        if (actual->nombre == nombre) {
+            cout << "Proceso encontrado:\n";
+            cout << "ID: " << actual->id << " | Nombre: " << actual->nombre 
+                 << " | Prioridad: " << actual->prioridad << "\n";
+            encontrado = true;
+            break;
+        }
+        actual = actual->siguiente;
+    }
+
+    if (!encontrado) {
+        cout << "Proceso no encontrado.\n";
+    }
+    cout << "---------------------------------------------\n";
+}
+
+// Función para modificar prioridad
+void modificarPrioridad() {
+    string id;
+    cout << "Ingrese el ID del proceso para modificar prioridad: ";
+    cin >> id;
+
+    Proceso* p = buscarProcesoID(id);
+    if (!p) {
+        cout << "Proceso no encontrado.\n";
+    } else {
+        int nuevaPrioridad;
+        cout << "Prioridad actual: " << p->prioridad << "\n";
+
+        do {
+            cout << "Ingrese nueva prioridad (entero no negativo): ";
+            cin >> nuevaPrioridad;
+            if (nuevaPrioridad < 0) {
+                cout << "Error: La prioridad no puede ser negativa. Intente nuevamente.\n";
+            }
+        } while (nuevaPrioridad < 0);
+
+        p->prioridad = nuevaPrioridad;
+        cout << "Prioridad modificada correctamente.\n";
+    }
+    cout << "---------------------------------------------\n";
+}
