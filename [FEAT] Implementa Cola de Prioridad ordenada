@@ -1,0 +1,77 @@
+// Estructura para la cola de CPU
+struct NodoCola {
+    string id;
+    string nombre;
+    int prioridad;
+    NodoCola* siguiente;
+};
+
+// Variable global para la cola
+NodoCola* colaCPU = NULL;
+
+// Función para encolar por prioridad
+void encolarCPU() {
+    // Limpiar cola actual
+    while (colaCPU) {
+        NodoCola* temp = colaCPU;
+        colaCPU = colaCPU->siguiente;
+        delete temp;
+    }
+
+    Proceso* actual = listaProcesos;
+
+    // Agregar procesos a la cola ordenada por prioridad
+    while (actual) {
+        NodoCola* nuevo = new NodoCola;
+        nuevo->id = actual->id;
+        nuevo->nombre = actual->nombre;
+        nuevo->prioridad = actual->prioridad;
+        nuevo->siguiente = NULL;
+
+        // Insertar ordenadamente
+        if (!colaCPU || nuevo->prioridad < colaCPU->prioridad) {
+            nuevo->siguiente = colaCPU;
+            colaCPU = nuevo;
+        } else {
+            NodoCola* temp = colaCPU;
+            while (temp->siguiente && temp->siguiente->prioridad <= nuevo->prioridad)
+                temp = temp->siguiente;
+            nuevo->siguiente = temp->siguiente;
+            temp->siguiente = nuevo;
+        }
+        actual = actual->siguiente;
+    }
+    cout << "Procesos encolados para ejecucion segun prioridad.\n";
+    cout << "---------------------------------------------\n";
+}
+
+// Función para ejecutar (desencolar)
+void ejecutarCPU() {
+    if (!colaCPU) {
+        cout << "No hay procesos en la cola de ejecucion.\n";
+    } else {
+        NodoCola* temp = colaCPU;
+        colaCPU = colaCPU->siguiente;
+        cout << "Ejecutando proceso:\n";
+        cout << "ID: " << temp->id << " | Nombre: " << temp->nombre 
+             << " | Prioridad: " << temp->prioridad << "\n";
+        delete temp;
+    }
+    cout << "---------------------------------------------\n";
+}
+
+// Función para mostrar cola
+void mostrarColaCPU() {
+    if (!colaCPU) {
+        cout << "La cola de ejecucion esta vacia.\n";
+    } else {
+        cout << "Cola de ejecucion (ordenada por prioridad):\n";
+        NodoCola* temp = colaCPU;
+        while (temp) {
+            cout << "ID: " << temp->id << " | Nombre: " << temp->nombre 
+                 << " | Prioridad: " << temp->prioridad << "\n";
+            temp = temp->siguiente;
+        }
+    }
+    cout << "---------------------------------------------\n";
+}
