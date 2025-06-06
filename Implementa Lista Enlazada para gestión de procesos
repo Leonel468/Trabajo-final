@@ -1,0 +1,57 @@
+// Función para insertar procesos en la lista enlazada
+void insertarProceso() {
+    string id, nombre;
+    int prioridad;
+
+    // Validación de ID único
+    do {
+        cout << "Ingrese ID del proceso: ";
+        cin >> id;
+        if (buscarProcesoID(id)) {
+            cout << "Error: El ID ya existe. Ingrese un ID unico.\n";
+        }
+    } while (buscarProcesoID(id));
+
+    cout << "Ingrese nombre del proceso: ";
+    cin >> nombre;
+
+    // Validación de prioridad
+    do {
+        cout << "Ingrese prioridad (entero no negativo): ";
+        cin >> prioridad;
+        if (prioridad < 0) {
+            cout << "Error: La prioridad no puede ser negativa. Intente nuevamente.\n";
+        }
+    } while (prioridad < 0);
+
+    // Crear nuevo proceso
+    Proceso* nuevo = new Proceso(id, nombre, prioridad);
+
+    // Insertar al final de la lista
+    if (!listaProcesos) {
+        listaProcesos = nuevo;
+    } else {
+        Proceso* actual = listaProcesos;
+        while (actual->siguiente)
+            actual = actual->siguiente;
+        actual->siguiente = nuevo;
+    }
+    cout << "Proceso insertado correctamente.\n";
+    cout << "---------------------------------------------\n";
+}
+
+void mostrarProcesos() {
+    if (!listaProcesos) {
+        cout << "No hay procesos registrados.\n";
+    } else {
+        Proceso* actual = listaProcesos;
+        cout << "Lista de procesos:\n";
+        while (actual) {
+            cout << "ID: " << actual->id
+                 << " | Nombre: " << actual->nombre
+                 << " | Prioridad: " << actual->prioridad << "\n";
+            actual = actual->siguiente;
+        }
+    }
+    cout << "---------------------------------------------\n";
+}
